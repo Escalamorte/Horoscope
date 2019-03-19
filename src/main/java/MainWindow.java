@@ -93,14 +93,14 @@ public class MainWindow extends JDialog {
         signIcon.setIcon(imageIcon);
 
         singLabel.setText(sign);
-        resultLabel.setText(DataFile.getFileData(sign));
+        resultLabel.setText("<html>" + DataFile.getFileData(sign) + "</html>");
         setSize(800, 400);
     }
 
     public static void main(String[] args) {
-        DataFile.getOnlineData();
         MainWindow dialog = new MainWindow();
         dialog.pack();
+        DataFile.getOnlineData();
         dialog.setVisible(true);
         System.exit(0);
     }

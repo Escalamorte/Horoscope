@@ -35,11 +35,10 @@ class DataFile {
             createDataFile();
             FileWriter fw = new FileWriter(fullName);
             for (Sign s : signs) {
-                //Document doc = Jsoup.connect("https://dni.ru/horoscope/" + s.toString().toLowerCase()).get();
-
-                fw.write(s + "|" + "doc.body().getElementsByClass(\"article__text\").toString()" + "\n");
-
-                System.out.println("https://dni.ru/horoscope/" + s.toString().toLowerCase());
+                Document doc = Jsoup.connect("https://dni.ru/horoscope/" + s.toString().toLowerCase()).get();
+                System.out.println(doc.body().getElementsByClass("article__text").text());
+                fw.write(s + "|" + doc.body().getElementsByClass("article__text").text() + "\n");
+                //System.out.println("https://dni.ru/horoscope/" + s.toString().toLowerCase());
             }
             fw.close();
         } catch (Exception e) {
@@ -53,7 +52,7 @@ class DataFile {
             Scanner scanner = new Scanner(fr);
             while (scanner.hasNextLine()){
                 if (scanner.next().contains(sign)) {
-                    return scanner.next();
+                    return scanner.nextLine() ;
                 }
             }
             fr.close();
