@@ -2,8 +2,11 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.MaskFormatter;
+import java.awt.*;
 import java.awt.event.*;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.YearMonth;
 
 public class MainWindow extends JDialog {
     private JPanel contentPane;
@@ -50,7 +53,6 @@ public class MainWindow extends JDialog {
         });
 
         dateField.getDocument().addDocumentListener(new DocumentListener() {
-
             //активация кнопки после ввода
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -84,17 +86,40 @@ public class MainWindow extends JDialog {
     }
 
     private void onOK() {
-        resultPanel.setVisible(true);
-        String sign = new Horoscope().spotSign(12, 22);
+        int day = Integer.parseInt(dateField.getText().substring(0, 2));
+        int month = Integer.parseInt(dateField.getText().substring(3, 5));
+        int year = Integer.parseInt(dateField.getText().substring(6, 10));
 
-        String iconDir = System.getProperty("user.dir") + "\\src\\main\\resources\\images\\" + sign + ".png";
-        System.out.println(iconDir);
-        ImageIcon imageIcon = new ImageIcon(iconDir);
-        signIcon.setIcon(imageIcon);
+        if (checkValue(day, month, year)){
+            String sign = new Horoscope().spotSign(month, day);
 
-        singLabel.setText(sign);
-        resultLabel.setText("<html>" + DataFile.getFileData(sign) + "</html>");
-        setSize(800, 400);
+            String iconDir = System.getProperty("user.dir") + "\\src\\main\\resources\\images\\" + sign + ".png";
+            ImageIcon imageIcon = new ImageIcon(new ImageIcon(iconDir).getImage().getScaledInstance(80,80, Image.SCALE_DEFAULT));
+            signIcon.setIcon(imageIcon);
+
+            LocalDate date = LocalDate.now();
+            resultLabel.setText("<html><body style='width: 350px'><p>" + date + " | " + DataFile.getFileData(sign) + "</p></body></html>");
+            System.out.println(DataFile.getFileData(sign));
+            singLabel.setText("<html>" + sign + "<br>" + "22.12 - 19.01" + "</br></html>");
+
+            resultPanel.setVisible(true);
+            setSize(820, 400);
+        } else {
+            new ErrorForm().run();
+        }
+    }
+
+    private boolean checkValue(int day, int month, int year) {
+        boolean flag = true;
+        if (year < 1 || month < 1 || month > 12) {
+            flag = false;
+        } else {
+            YearMonth yearMonth = YearMonth.of(year, month);
+            if (day < 1 || day > yearMonth.lengthOfMonth()) {
+                flag = false;
+            }
+        }
+        return flag;
     }
 
     public static void main(String[] args) {
