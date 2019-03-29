@@ -31,38 +31,34 @@ class DataFile {
 
     static void getOnlineData() {
         Sign[] signs = Sign.values();
-        if (data.exists() && data.canWrite()) {
-            try {
-                FileWriter fw = new FileWriter(fullName);
-                for (Sign s : signs) {
-                    Document doc = Jsoup.connect("https://dni.ru/horoscope/" + s.toString().toLowerCase()).get();
-                    System.out.println(doc.body().getElementsByClass("article__text").text());
-                    fw.write(s + "| " + doc.body().getElementsByClass("article__text").text() + "\n");
-                }
-                fw.close();
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        } else {
+        try {
             createDataFile();
+            FileWriter fw = new FileWriter(fullName);
+            for (Sign s : signs) {
+                //Document doc = Jsoup.connect("https://dni.ru/horoscope/" + s.toString().toLowerCase()).get();
+
+                fw.write(s + "|" + "doc.body().getElementsByClass(\"article__text\").toString()" + "\n");
+
+                System.out.println("https://dni.ru/horoscope/" + s.toString().toLowerCase());
+            }
+            fw.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
     static String getFileData(String sign) {
-        if (data.exists()) {
-                    try {
-                        FileReader fr = new FileReader(fullName);
-                        Scanner scanner = new Scanner(fr);
-                while (scanner.hasNextLine()) {
-                    if (scanner.next().contains(sign)) {
-                        fr.close();
-                        return scanner.nextLine();
-                    }
+        try{
+            FileReader fr = new FileReader(fullName);
+            Scanner scanner = new Scanner(fr);
+            while (scanner.hasNextLine()){
+                if (scanner.next().contains(sign)) {
+                    return scanner.next();
                 }
-                fr.close();
-            } catch (IOException e) {
-                return e.getMessage();
             }
+            fr.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
         return "Capri";
     }
