@@ -31,15 +31,30 @@ class DataFile {
 
     static void getOnlineData() {
         Sign[] signs = Sign.values();
+        String[] signTitle;
+        String signDate;
+        String singText;
         if (data.exists() && data.canWrite()) {
             try {
-                FileWriter fw = new FileWriter(fullName);
-                for (Sign s : signs) {
-                    Document doc = Jsoup.connect("https://dni.ru/horoscope/" + s.toString().toLowerCase()).get();
-                    System.out.println(doc.body().getElementsByClass("article__text").text());
-                    fw.write(s + "| " + doc.body().getElementsByClass("article__text").text() + "\n");
+                FileReader fr = new FileReader(fullName);
+                Scanner scanner = new Scanner(fr);
+
+                if (!scanner.hasNextLine()) {
+                    FileWriter fw = new FileWriter(fullName);
+                    for (Sign s : signs) {
+                        Document doc = Jsoup.connect("https://dni.ru/horoscope/" + s.toString().toLowerCase()).get();
+                        System.out.println(doc.body().getElementsByClass("horoscopeslide_title").text());
+                        System.out.println(doc.body().getElementsByClass("article__text").text());
+
+                        signTitle = doc.body().getElementsByClass("horoscopeslide_title").text().split(" ");
+                        signDate = signTitle[1] + " " + signTitle[2] + " " + signTitle[3] + " " + signTitle[4] + " " + signTitle[5] + " " + signTitle[6];
+                        System.out.println(signDate);
+                        singText = doc.body().getElementsByClass("article__text").text();
+
+                        fw.write(s + ";" + signTitle[1] + ";" + signDate + singText + "\n");
+                    }
+                    fw.close();
                 }
-                fw.close();
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
