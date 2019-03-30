@@ -98,12 +98,12 @@ public class MainWindow extends JDialog {
             signIcon.setIcon(imageIcon);
 
             String[] singDates = DataFile.getFileData(sign).split(";");
-            //String sDate = singDates[1] + " " + singDates[3] + " " + singDates[4] + " " + singDates[5] + " " + singDates[6];
-            System.out.println(singDates[1]);
-            //singLabel.setText("<html>" + singDates[1] + "<br>" + sDate + "</br></html>");
+            System.out.println(DataFile.getFileData(sign));
+            System.out.println(singDates[0]);
+            singLabel.setText("<html><br>" + singDates[0] + "</br></html>");
 
             LocalDate date = LocalDate.now();
-            resultLabel.setText("<html><body style='width: 370px'>" + date + " | " + DataFile.getFileData(sign) + "</body></html>");
+            resultLabel.setText("<html><body style='width: 370px'>" + date + " | " + singDates[1] + "</body></html>");
             System.out.println(DataFile.getFileData(sign));
 
             resultPanel.setVisible(true);

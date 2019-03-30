@@ -31,8 +31,7 @@ class DataFile {
 
     static void getOnlineData() {
         Sign[] signs = Sign.values();
-        String[] signTitle;
-        String signDate;
+        String signTitle;
         String singText;
         if (data.exists() && data.canWrite()) {
             try {
@@ -46,12 +45,10 @@ class DataFile {
                         System.out.println(doc.body().getElementsByClass("horoscopeslide_title").text());
                         System.out.println(doc.body().getElementsByClass("article__text").text());
 
-                        signTitle = doc.body().getElementsByClass("horoscopeslide_title").text().split(" ");
-                        signDate = signTitle[1] + " " + signTitle[2] + " " + signTitle[3] + " " + signTitle[4] + " " + signTitle[5] + " " + signTitle[6];
-                        System.out.println(signDate);
+                        signTitle = doc.body().getElementsByClass("horoscopeslide_title").text();
                         singText = doc.body().getElementsByClass("article__text").text();
 
-                        fw.write(s + ";" + signTitle[1] + ";" + signDate + singText + "\n");
+                        fw.write(s + "; " + signTitle + ";" + singText + singText + "\n");
                     }
                     fw.close();
                 }
