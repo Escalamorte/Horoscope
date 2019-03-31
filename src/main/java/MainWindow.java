@@ -70,11 +70,7 @@ public class MainWindow extends JDialog {
             }
         });
 
-        OKButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
-        });
+        OKButton.addActionListener(e -> onOK());
     }
 
     private void buttonActivator() {
@@ -97,14 +93,15 @@ public class MainWindow extends JDialog {
             ImageIcon imageIcon = new ImageIcon(new ImageIcon(iconDir).getImage().getScaledInstance(80,80, Image.SCALE_DEFAULT));
             signIcon.setIcon(imageIcon);
 
-            String[] singDates = DataFile.getFileData(sign).split(";");
-            System.out.println(DataFile.getFileData(sign));
-            System.out.println(singDates[0]);
-            singLabel.setText("<html><br>" + singDates[0] + "</br></html>");
+            String[] singTitle = DataFile.getSignTitle(sign).split(";");
+            System.out.println(DataFile.getSignTitle(sign));
+            System.out.println(singTitle[0]);
+            System.out.println(singTitle[1]);
+            singLabel.setText("<html>" + singTitle[0] + "<br>" + singTitle[1] + "</br></html>");
 
             LocalDate date = LocalDate.now();
-            resultLabel.setText("<html><body style='width: 370px'>" + date + " | " + singDates[1] + "</body></html>");
-            System.out.println(DataFile.getFileData(sign));
+            resultLabel.setText("<html><body style='width: 370px'>" + date + " | " + DataFile.getSingText(sign) + "</body></html>");
+            System.out.println(DataFile.getSingText(sign));
 
             resultPanel.setVisible(true);
             setSize(new Dimension(870, 450));

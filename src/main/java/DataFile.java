@@ -31,7 +31,9 @@ class DataFile {
 
     static void getOnlineData() {
         Sign[] signs = Sign.values();
-        String signTitle;
+        String[] signTitle;
+        String signName;
+        String singDates;
         String singText;
         if (data.exists() && data.canWrite()) {
             try {
@@ -45,10 +47,12 @@ class DataFile {
                         System.out.println(doc.body().getElementsByClass("horoscopeslide_title").text());
                         System.out.println(doc.body().getElementsByClass("article__text").text());
 
-                        signTitle = doc.body().getElementsByClass("horoscopeslide_title").text();
+                        signTitle = doc.body().getElementsByClass("horoscopeslide_title").text().split(" ");
+                        signName = signTitle[0];
+                        singDates = signTitle[1] + " " + signTitle[2] + " " + signTitle[3] + " " + signTitle[4] + " " + signTitle[5];
                         singText = doc.body().getElementsByClass("article__text").text();
 
-                        fw.write(s + "; " + signTitle + ";" + singText + singText + "\n");
+                        fw.write(s + "; " + signName + "; " + singDates + "; " + singText + singText + "\n");
                     }
                     fw.close();
                 }
@@ -60,7 +64,32 @@ class DataFile {
         }
     }
 
-    static String getFileData(String sign) {
+    static String getSingText(String sign) {
+        if (data.exists()) {
+                    try {
+                        FileReader fr = new FileReader(fullName);
+                        Scanner scanner = new Scanner(fr);
+                while (scanner.hasNextLine()) {
+                    if (scanner.next().contains(sign + ";")) {
+                        scanner.next();
+                        scanner.next();
+                        scanner.next();
+                        scanner.next();
+                        scanner.next();
+                        scanner.next();
+                        fr.close();
+                        return scanner.nextLine();
+                    }
+                }
+                fr.close();
+            } catch (IOException e) {
+                return e.getMessage();
+            }
+        }
+        return null;
+    }
+
+    static String getSignTitle(String sign) {
         if (data.exists()) {
                     try {
                         FileReader fr = new FileReader(fullName);
