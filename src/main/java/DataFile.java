@@ -31,18 +31,30 @@ class DataFile {
 
     static void getOnlineData() {
         Sign[] signs = Sign.values();
+        String signTitle;
+        String singText;
         if (data.exists() && data.canWrite()) {
-//            try {
-//                FileWriter fw = new FileWriter(fullName);
-//                for (Sign s : signs) {
-//                    Document doc = Jsoup.connect("https://dni.ru/horoscope/" + s.toString().toLowerCase()).get();
-//                    System.out.println(doc.body().getElementsByClass("article__text").text());
-//                    fw.write(s + "| " + doc.body().getElementsByClass("article__text").text() + "\n");
-//                }
-//                fw.close();
-//            } catch (Exception e) {
-//                System.out.println(e.getMessage());
-//            }
+            try {
+                FileReader fr = new FileReader(fullName);
+                Scanner scanner = new Scanner(fr);
+
+                if (!scanner.hasNextLine()) {
+                    FileWriter fw = new FileWriter(fullName);
+                    for (Sign s : signs) {
+                        Document doc = Jsoup.connect("https://dni.ru/horoscope/" + s.toString().toLowerCase()).get();
+                        System.out.println(doc.body().getElementsByClass("horoscopeslide_title").text());
+                        System.out.println(doc.body().getElementsByClass("article__text").text());
+
+                        signTitle = doc.body().getElementsByClass("horoscopeslide_title").text();
+                        singText = doc.body().getElementsByClass("article__text").text();
+
+                        fw.write(s + "; " + signTitle + ";" + singText + singText + "\n");
+                    }
+                    fw.close();
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         } else {
             createDataFile();
         }
