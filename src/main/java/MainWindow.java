@@ -82,9 +82,9 @@ public class MainWindow extends JDialog {
     }
 
     private void onOK() {
-        int day = Integer.parseInt(dateField.getText().substring(0, 2));
-        int month = Integer.parseInt(dateField.getText().substring(3, 5));
-        int year = Integer.parseInt(dateField.getText().substring(6, 10));
+        int day = Integer.parseInt(dateField.getText().substring(0, 2)); //получение введенного дня
+        int month = Integer.parseInt(dateField.getText().substring(3, 5)); //получение введенного месяца
+        int year = Integer.parseInt(dateField.getText().substring(6, 10)); //получение введенного года
 
         if (checkValue(day, month, year)){
             String sign = new Horoscope().spotSign(month, day);
@@ -94,18 +94,13 @@ public class MainWindow extends JDialog {
             signIcon.setIcon(imageIcon);
 
             String[] singTitle = DataFile.getSignTitle(sign).split(";");
-            System.out.println(DataFile.getSignTitle(sign));
-            System.out.println(singTitle[0]);
-            System.out.println(singTitle[1]);
             singLabel.setText("<html>" + singTitle[0] + "<br>" + singTitle[1] + "</br></html>");
 
             LocalDate date = LocalDate.now();
             resultLabel.setText("<html><body style='width: 370px'>" + date + " | " + DataFile.getSingText(sign) + "</body></html>");
-            System.out.println(DataFile.getSingText(sign));
 
             resultPanel.setVisible(true);
-            setSize(new Dimension(870, 450));
-            //setSize(800, 400);
+            setSize(new Dimension(870, 470));
         } else {
             new ErrorForm().run();
         }
@@ -130,9 +125,5 @@ public class MainWindow extends JDialog {
         DataFile.getOnlineData();
         dialog.setVisible(true);
         System.exit(0);
-    }
-
-    enum Pediod {
-
     }
 }

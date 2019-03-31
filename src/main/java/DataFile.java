@@ -1,9 +1,7 @@
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+
+import java.io.*;
 import java.util.Scanner;
 
 
@@ -66,23 +64,20 @@ class DataFile {
     }
 
     static String getSingText(String sign) {
+        String text;
+        String[] textArr;
         if (data.exists()) {
-                    try {
-                        FileReader fr = new FileReader(fullName);
-                        Scanner scanner = new Scanner(fr);
-                while (scanner.hasNextLine()) {
-                    if (scanner.next().contains(sign + ";")) {
-                        scanner.next();
-                        scanner.next();
-                        scanner.next();
-                        scanner.next();
-                        scanner.next();
-                        scanner.next();
-                        fr.close();
-                        return scanner.nextLine();
+            try {
+                FileReader fr = new FileReader(fullName);
+                BufferedReader bf = new BufferedReader(fr);
+                while ((text = bf.readLine()) != null) {
+                    if (text.contains(sign)){
+                        textArr = text.split(";");
+                        return  textArr[3];
                     }
                 }
                 fr.close();
+                bf.close();
             } catch (IOException e) {
                 return e.getMessage();
             }
