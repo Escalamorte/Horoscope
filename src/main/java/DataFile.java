@@ -18,6 +18,7 @@ class DataFile {
             try{
                 if(data.createNewFile()) {
                     System.out.println("File created");
+                    getOnlineData();
                 } else {
                     System.out.println("Error");
                 }
