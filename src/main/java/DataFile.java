@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.Scanner;
 
 
-class DataFile {
+class DataFile extends Thread{
     private static String fileName = "data.txt";
     private static String dir = System.getProperty("user.dir");
     private static String fullName = dir + "\\src\\main\\resources" + File.separator + fileName;
@@ -28,7 +28,7 @@ class DataFile {
         }
     }
 
-    static void getOnlineData() {
+    private static void getOnlineData() {
         Sign[] signs = Sign.values();
         String[] signTitle;
         String signName;
@@ -102,6 +102,10 @@ class DataFile {
             }
         }
         return "Capri";
+    }
+
+    public void run() {
+        getOnlineData();
     }
 
     enum Sign {

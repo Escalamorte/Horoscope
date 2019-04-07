@@ -122,7 +122,7 @@ public class MainWindow extends JDialog {
     public static void main(String[] args) {
         MainWindow dialog = new MainWindow();
         dialog.pack();
-        DataFile.getOnlineData();
+        new DataFile().start();
         dialog.setVisible(true);
         System.exit(0);
     }
